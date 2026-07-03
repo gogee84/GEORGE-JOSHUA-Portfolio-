@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gogee — George Joshua Monah · Frontend Developer</title>
+<meta name="description" content="George Joshua Monah (Gogee) — frontend developer in Arusha, Tanzania. Live case studies: Asili Fresh Juice and KALUS Adventure & Safari.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230B120F%22/><text x=%2250%22 y=%2268%22 font-size=%2254%22 text-anchor=%22middle%22 fill=%22%23F2A65A%22 font-family=%22sans-serif%22 font-weight=%22700%22>g</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B120F;
+    --bg-2:#0F1713;
+    --surface:#141F19;
+    --surface-2:#1B2820;
+    --sky-top:#1B1140;
+    --sky-mid:#4A2B5C;
+    --sky-horizon:#E8894A;
+    --amber:#F2A65A;
+    --amber-bright:#FFC17E;
+    --green:#4F9C6C;
+    --green-bright:#6FC08C;
+    --text:#F3F1EA;
+    --text-muted:#9CA8A0;
+    --border:rgba(243,241,234,.09);
+    --display:'Space Grotesk',sans-serif;
+    --body:'DM Sans',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--text); font-family:var(--body);
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  a{color:inherit;}
+  ::selection{ background:var(--amber); color:#1a1006; }
+  img,iframe{max-width:100%;display:block;}
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 28px; }
+  section{ position:relative; }
+
+  h1,h2,h3{ font-family:var(--display); margin:0; font-weight:600; letter-spacing:-.01em; }
+  .eyebrow{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--green-bright); display:flex; align-items:center; gap:10px; margin-bottom:16px;
+  }
+  .eyebrow::before{ content:''; width:22px; height:1px; background:var(--green-bright); }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 28px; backdrop-filter:blur(10px);
+    background:linear-gradient(rgba(11,18,15,.75),rgba(11,18,15,.35));
+    border-bottom:1px solid transparent; transition:border-color .3s ease, background .3s ease;
+  }
+  .nav.scrolled{ border-color:var(--border); background:rgba(11,18,15,.85); }
+  .nav .logo{ font-family:var(--display); font-weight:700; font-size:18px; letter-spacing:.02em; display:flex; align-items:center; gap:8px;}
+  .nav .logo .dot{ width:8px; height:8px; border-radius:50%; background:var(--amber); }
+  .nav ul{ list-style:none; display:flex; gap:28px; margin:0; padding:0; }
+  .nav a.nav-link{
+    font-family:var(--mono); font-size:12.5px; letter-spacing:.05em; text-transform:uppercase;
+    text-decoration:none; color:var(--text-muted); transition:color .2s ease; position:relative;
+  }
+  .nav a.nav-link:hover, .nav a.nav-link:focus-visible{ color:var(--amber-bright); }
+  .nav .cta{
+    font-family:var(--mono); font-size:12px; letter-spacing:.04em; text-transform:uppercase;
+    padding:9px 16px; border:1px solid var(--green); border-radius:6px; text-decoration:none; color:var(--green-bright);
+    transition:background .2s ease,color .2s ease;
+  }
+  .nav .cta:hover{ background:var(--green); color:#08120c; }
+  .nav-toggle{ display:none; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100svh; display:flex; flex-direction:column; justify-content:flex-end;
+    position:relative; overflow:hidden;
+    background:linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 45%, var(--sky-horizon) 78%, #120A08 100%);
+  }
+  .hero .stars{
+    position:absolute; inset:0; opacity:.5;
+    background-image:radial-gradient(1.5px 1.5px at 20% 20%, #fff, transparent),
+      radial-gradient(1px 1px at 60% 10%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 80% 30%, #fff, transparent),
+      radial-gradient(1px 1px at 40% 15%, #fff, transparent),
+      radial-gradient(1px 1px at 90% 8%, #fff, transparent);
+    background-repeat:no-repeat;
+  }
+  .hero .sun{
+    position:absolute; left:50%; top:38%; width:220px; height:220px; border-radius:50%; transform:translate(-50%,-50%);
+    background:radial-gradient(circle, var(--amber-bright), var(--amber) 55%, transparent 72%);
+    filter:blur(2px); opacity:.85;
+  }
+  .skyline{ position:absolute; left:0; right:0; bottom:0; width:100%; height:auto; display:block; }
+  .skyline .peak{ fill:#0B120F; }
+  .skyline .snow{ fill:#EDE7DE; opacity:.92; }
+
+  .hero-content{
+    position:relative; z-index:2; padding:0 28px 64px; max-width:1180px; margin:0 auto; width:100%;
+  }
+  .hero-kicker{
+    font-family:var(--mono); font-size:12.5px; letter-spacing:.22em; text-transform:uppercase;
+    color:#FFE3C2; margin-bottom:18px; opacity:.9;
+  }
+  .hero h1{
+    font-size:clamp(42px,8.6vw,104px); line-height:.94; color:#FBF6EC;
+    text-shadow:0 4px 40px rgba(0,0,0,.35);
+  }
+  .hero h1 .accent{ color:var(--amber-bright); font-style:normal; }
+  .hero-sub{
+    max-width:560px; font-size:clamp(15px,1.6vw,18px); color:#F1E6D8; line-height:1.6; margin-top:22px;
+  }
+  .hero-actions{ display:flex; flex-wrap:wrap; gap:14px; margin-top:34px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12.5px; letter-spacing:.05em; text-transform:uppercase;
+    padding:14px 22px; border-radius:8px; text-decoration:none; font-weight:600; min-height:44px;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn:focus-visible{ outline:3px solid var(--amber-bright); outline-offset:2px; }
+  .btn-solid{ background:var(--amber); color:#20130A; box-shadow:0 10px 30px rgba(242,166,90,.28); }
+  .btn-solid:hover{ background:var(--amber-bright); }
+  .btn-line{ border:1px solid rgba(251,246,236,.4); color:#FBF6EC; }
+  .btn-line:hover{ background:rgba(251,246,236,.1); }
+
+  .scroll-cue{
+    position:absolute; bottom:20px; left:50%; transform:translateX(-50%); z-index:2;
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:#F1E6D8;
+    display:flex; flex-direction:column; align-items:center; gap:8px; opacity:.75;
+  }
+  .scroll-cue .line{ width:1px; height:30px; background:linear-gradient(#F1E6D8, transparent); animation:cue 1.8s ease-in-out infinite; }
+  @keyframes cue{ 0%{transform:scaleY(0);transform-origin:top;} 50%{transform:scaleY(1);transform-origin:top;} 51%{transform-origin:bottom;} 100%{transform:scaleY(0);transform-origin:bottom;} }
+
+  /* ---------- SECTION SHELL ---------- */
+  .section{ padding:120px 0; }
+  .section-head{ max-width:640px; margin-bottom:56px; }
+  .section-head h2{ font-size:clamp(30px,4vw,46px); }
+  .section-head p{ color:var(--text-muted); margin-top:14px; font-size:16px; line-height:1.6; }
+
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- WORK / PROJECTS ---------- */
+  .work-grid{ display:grid; grid-template-columns:1fr; gap:32px; }
+  .project-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:18px; overflow:hidden;
+    display:grid; grid-template-columns:1.1fr 1fr; align-items:stretch;
+  }
+  .project-card:nth-child(even){ grid-template-columns:1fr 1.1fr; }
+  .project-card:nth-child(even) .project-preview{ order:2; }
+  .project-preview{
+    position:relative; background:var(--surface-2); min-height:340px;
+    display:flex; align-items:center; justify-content:center; padding:22px;
+  }
+  .browser-chrome{
+    width:100%; height:100%; background:#0d1512; border-radius:10px; overflow:hidden;
+    box-shadow:0 20px 50px rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.06);
+    display:flex; flex-direction:column;
+  }
+  .chrome-bar{
+    display:flex; align-items:center; gap:8px; padding:10px 12px; background:#111b16; border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .chrome-dot{ width:9px; height:9px; border-radius:50%; }
+  .chrome-dot.r{ background:#ec6a5e; } .chrome-dot.y{ background:#f4bf4f; } .chrome-dot.g{ background:#61c454; }
+  .chrome-url{
+    flex:1; margin-left:8px; font-family:var(--mono); font-size:10.5px; color:var(--text-muted);
+    background:rgba(255,255,255,.04); border-radius:5px; padding:4px 10px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .chrome-frame{ position:relative; flex:1; background:#0d1512; }
+  .chrome-frame iframe{
+    position:absolute; top:0; left:0; width:250%; height:250%;
+    transform:scale(.4); transform-origin:top left; border:0;
+  }
+  .project-body{ padding:44px 40px; display:flex; flex-direction:column; justify-content:center; }
+  .project-num{ font-family:var(--mono); font-size:12px; color:var(--green-bright); letter-spacing:.1em; margin-bottom:10px; }
+  .project-body h3{ font-size:clamp(24px,2.8vw,32px); margin-bottom:12px; }
+  .project-body p{ color:var(--text-muted); line-height:1.65; font-size:15px; margin:0 0 18px; }
+  .project-feats{ list-style:none; padding:0; margin:0 0 22px; }
+  .project-feats li{ font-size:13.5px; color:#D8DED8; padding-left:18px; position:relative; margin-bottom:8px; }
+  .project-feats li::before{ content:''; position:absolute; left:0; top:7px; width:7px; height:7px; border-radius:50%; background:var(--amber); }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px; }
+  .tag{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.04em; padding:5px 10px; border-radius:20px;
+    border:1px solid var(--border); color:var(--text-muted);
+  }
+  .project-actions{ display:flex; flex-wrap:wrap; gap:12px; }
+
+  @media (max-width:860px){
+    .project-card, .project-card:nth-child(even){ grid-template-columns:1fr; }
+    .project-card:nth-child(even) .project-preview{ order:0; }
+    .project-preview{ min-height:260px; }
+    .project-body{ padding:32px 26px; }
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about{ display:grid; grid-template-columns:.9fr 1.1fr; gap:60px; align-items:start; }
+  .about-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:32px;
+    position:relative; overflow:hidden;
+  }
+  .about-card::before{
+    content:''; position:absolute; inset:0; opacity:.5; pointer-events:none;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(111,192,140,.05) 0 1px, transparent 1px 26px),
+      repeating-linear-gradient(90deg, rgba(111,192,140,.05) 0 1px, transparent 1px 26px);
+  }
+  .stamp{
+    position:relative; display:inline-flex; align-items:center; gap:10px; font-family:var(--mono);
+    font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--amber-bright);
+    border:1px solid rgba(242,166,90,.4); padding:8px 14px; border-radius:30px; margin-bottom:20px;
+  }
+  .about-card h3{ position:relative; font-size:22px; margin-bottom:14px; }
+  .about-card p{ position:relative; color:var(--text-muted); line-height:1.7; font-size:14.5px; margin:0 0 12px; }
+  .stat-row{ position:relative; display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:22px; }
+  .stat{ border-top:1px solid var(--border); padding-top:12px; }
+  .stat .n{ font-family:var(--display); font-size:24px; color:var(--amber-bright); }
+  .stat .l{ font-family:var(--mono); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.08em; margin-top:2px; }
+
+  .about-copy p{ font-size:16px; line-height:1.75; color:#DDE3DC; margin:0 0 18px; }
+  .about-copy .pull{
+    font-family:var(--display); font-size:22px; color:var(--green-bright); font-weight:500;
+    border-left:2px solid var(--amber); padding-left:18px; margin:28px 0;
+  }
+
+  @media (max-width:860px){ .about{ grid-template-columns:1fr; } }
+
+  /* ---------- SKILLS ---------- */
+  .skills-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; }
+  .skill-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px;
+    transition:transform .2s ease, border-color .2s ease;
+  }
+  .skill-card:hover{ transform:translateY(-4px); border-color:var(--green); }
+  .skill-card .ic{ width:26px; height:26px; margin-bottom:14px; color:var(--green-bright); }
+  .skill-card h4{ font-family:var(--display); font-size:16px; margin:0 0 6px; font-weight:600; }
+  .skill-card p{ font-family:var(--mono); font-size:11.5px; color:var(--text-muted); margin:0; }
+
+  /* ---------- CONTACT ---------- */
+  .contact{
+    background:linear-gradient(160deg, var(--surface), var(--bg-2));
+    border:1px solid var(--border); border-radius:24px; padding:72px 48px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  .contact::before{
+    content:''; position:absolute; width:420px; height:420px; border-radius:50%;
+    background:radial-gradient(circle, rgba(242,166,90,.18), transparent 70%);
+    top:-140px; right:-100px;
+  }
+  .contact h2{ font-size:clamp(30px,5vw,52px); position:relative; }
+  .contact p{ color:var(--text-muted); max-width:480px; margin:16px auto 30px; position:relative; font-size:15.5px; }
+  .contact-actions{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; position:relative; }
+  .socials{ display:flex; justify-content:center; gap:20px; margin-top:34px; position:relative; }
+  .socials a{ font-family:var(--mono); font-size:12px; letter-spacing:.05em; text-decoration:none; color:var(--text-muted); border-bottom:1px solid transparent; transition:color .2s, border-color .2s; }
+  .socials a:hover{ color:var(--amber-bright); border-color:var(--amber-bright); }
+
+  footer{ padding:36px 28px 44px; text-align:center; font-family:var(--mono); font-size:11.5px; color:var(--text-muted); letter-spacing:.04em; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .reveal{ transition:none; opacity:1; transform:none; }
+    .scroll-cue .line{ animation:none; }
+  }
+
+  @media (max-width:720px){
+    .nav ul{ display:none; }
+    .nav .cta{ font-size:11px; padding:8px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="#top" class="logo"><span class="dot"></span>gogee</a>
+  <ul>
+    <li><a class="nav-link" href="#work">Work</a></li>
+    <li><a class="nav-link" href="#about">About</a></li>
+    <li><a class="nav-link" href="#skills">Skills</a></li>
+  </ul>
+  <a class="cta" href="#contact">Contact</a>
+</nav>
+
+<header class="hero" id="top">
+  <div class="stars"></div>
+  <div class="sun"></div>
+  <svg class="skyline" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path class="peak" d="M0,320 L0,220 L180,120 L260,170 L380,60 L420,95 L520,20 L560,55 L640,140 L760,90 L860,180 L980,130 L1100,210 L1220,150 L1320,230 L1440,190 L1440,320 Z"/>
+    <path class="snow" d="M500,26 L520,20 L560,55 L546,58 L530,42 L512,50 Z M400,68 L420,95 L406,100 L392,80 Z"/>
+  </svg>
+  <div class="hero-content">
+    <div class="hero-kicker">Frontend Developer · Arusha, Tanzania</div>
+    <h1>George Joshua<br>Monah — <span class="accent">Gogee</span></h1>
+    <p class="hero-sub">I design and build web experiences from the foot of Kilimanjaro — currently
+    showcasing two live projects: a juice brand's storefront and a premium safari outfitter's site.</p>
+    <div class="hero-actions">
+      <a class="btn btn-solid" href="#work">See the work</a>
+      <a class="btn btn-line" href="mailto:georgemonah84@gmail.com">Get in touch</a>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+</header>
+
+<main>
+  <section class="section" id="work">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Selected Work</div>
+        <h2>Two sites, live and hosted on GitHub</h2>
+        <p>Each preview below is the real, working site — not a screenshot. Scroll, click, look around.</p>
+      </div>
+
+      <div class="work-grid">
+        <article class="project-card reveal">
+          <div class="project-preview">
+            <div class="browser-chrome">
+              <div class="chrome-bar">
+                <span class="chrome-dot r"></span><span class="chrome-dot y"></span><span class="chrome-dot g"></span>
+                <span class="chrome-url">gogee84.github.io/Juice-shop</span>
+              </div>
+              <div class="chrome-frame">
+                <iframe src="https://gogee84.github.io/Juice-shop/" loading="lazy" title="Asili Fresh Juice live preview"></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="project-body">
+            <div class="project-num">01 / Landing Page</div>
+            <h3>Asili Fresh Juice</h3>
+            <p>A cold-pressed juice brand's storefront, telling the story of fruit picked near
+            Mount Meru and pressed the same morning it's sold.</p>
+            <ul class="project-feats">
+              <li>Origin-first hero section</li>
+              <li>Animated stat counters</li>
+              <li>Full flavour menu, priced locally</li>
+              <li>WhatsApp ordering call-to-action</li>
+            </ul>
+            <div class="tag-row">
+              <span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span>
+            </div>
+            <div class="project-actions">
+              <a class="btn btn-solid" href="https://gogee84.github.io/Juice-shop/" target="_blank" rel="noopener">Visit Live Site ↗</a>
+              <a class="btn btn-line" href="https://github.com/gogee84/Juice-shop" target="_blank" rel="noopener">View Code</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-preview">
+            <div class="browser-chrome">
+              <div class="chrome-bar">
+                <span class="chrome-dot r"></span><span class="chrome-dot y"></span><span class="chrome-dot g"></span>
+                <span class="chrome-url">gogee84.github.io/tanzania-tourism-website-</span>
+              </div>
+              <div class="chrome-frame">
+                <iframe src="https://gogee84.github.io/tanzania-tourism-website-/" loading="lazy" title="KALUS Adventure and Safari live preview"></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="project-body">
+            <div class="project-num">02 / Tourism Site</div>
+            <h3>KALUS Adventure &amp; Safari</h3>
+            <p>An ultra-premium Northern Tanzania safari concept covering Serengeti, Ngorongoro
+            and Tarangire, built to feel as polished as the trips it describes.</p>
+            <ul class="project-feats">
+              <li>Interactive itinerary builder with live pricing</li>
+              <li>Signature-experience cards</li>
+              <li>Guest reviews section</li>
+              <li>Dark, editorial visual style</li>
+            </ul>
+            <div class="tag-row">
+              <span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span>
+            </div>
+            <div class="project-actions">
+              <a class="btn btn-solid" href="https://gogee84.github.io/tanzania-tourism-website-/" target="_blank" rel="noopener">Visit Live Site ↗</a>
+              <a class="btn btn-line" href="https://github.com/gogee84/tanzania-tourism-website-" target="_blank" rel="noopener">View Code</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="wrap about">
+      <div class="about-card reveal">
+        <div class="stamp">◎ Arusha, TZ</div>
+        <h3>Field Notes</h3>
+        <p>Advanced Secondary Education — Physics, Pure Mathematics, Computer Science (2024–2026).</p>
+        <p>Certificate in Mobile Application Development — Arusha Computing Center (2023).</p>
+        <div class="stat-row">
+          <div class="stat"><div class="n">2 yrs</div><div class="l">Lab Technician</div></div>
+          <div class="stat"><div class="n">2</div><div class="l">Live Sites Shipped</div></div>
+        </div>
+      </div>
+      <div class="about-copy reveal">
+        <div class="eyebrow">About</div>
+        <h2 style="font-size:clamp(26px,3.4vw,38px); margin-bottom:20px;">Self-taught, detail-first, building in public.</h2>
+        <p>I'm George Joshua Monah — most people know me as <strong>Gogee</strong>. I build for the
+        web from Arusha, Tanzania, and I got here the hands-on way: two years as a school
+        laboratory technician taught me to follow a procedure exactly and check every result before
+        calling it done. That habit followed me straight into code.</p>
+        <p>Outside of class I taught myself HTML, CSS and JavaScript by shipping real projects
+        instead of only following tutorials — the two sites in this portfolio are both live,
+        both hosted on GitHub, and both built end to end by me.</p>
+        <div class="pull">"I'd rather ship something small and real than something big and imaginary."</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="skills">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Toolkit</div>
+        <h2>What I build with</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-card reveal">
+          <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M4 3h16l-1.5 16L12 21l-6.5-2L4 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.5 8h9l-.3 3H8.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h4>HTML5</h4><p>Semantic structure</p>
+        </div>
+        <div class="skill-card reveal">
+          <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M4 3h16l-1.5 16L12 21l-6.5-2L4 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 8h8M8.3 14l3.7 1 3.7-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h4>CSS3</h4><p>Layout &amp; motion</p>
+        </div>
+        <div class="skill-card reveal">
+          <svg class="ic" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M8 15.5c0 1 .6 1.6 1.6 1.6S11 16.4 11 15.2V9M14 9v5.3c0 1.4.9 2 1.9 1.6.9-.3 1.4-1 1.4-2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <h4>JavaScript</h4><p>Interaction logic</p>
+        </div>
+        <div class="skill-card reveal">
+          <svg class="ic" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <h4>Responsive Design</h4><p>Mobile to desktop</p>
+        </div>
+        <div class="skill-card reveal">
+          <svg class="ic" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2.2" stroke="currentColor" stroke-width="1.6"/><circle cx="6" cy="18" r="2.2" stroke="currentColor" stroke-width="1.6"/><circle cx="18" cy="12" r="2.2" stroke="currentColor" stroke-width="1.6"/><path d="M6 8.2V15.8M8 6.8l8 3.6M8 17.2l8-3.6" stroke="currentColor" stroke-width="1.6"/></svg>
+          <h4>Git &amp; GitHub</h4><p>Version control</p>
+        </div>
+        <div class="skill-card reveal">
+          <svg class="ic" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="7" height="5" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="7" width="7" height="10" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="4" y="14" width="7" height="3" rx="1" stroke="currentColor" stroke-width="1.6"/></svg>
+          <h4>UI Layout</h4><p>Grids &amp; hierarchy</p>
+        </div>
+        <div class="skill-card reveal">
+          <svg class="ic" viewBox="0 0 24 24" fill="none"><rect x="7" y="2" width="10" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M11 17h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <h4>Mobile App Dev</h4><p>Certified, 2023</p>
+        </div>
+        <div class="skill-card reveal">
+          <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M11 3a8 8 0 1 0 8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M11 3v8h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h4>Debugging</h4><p>Patient &amp; precise</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="contact reveal">
+        <div class="eyebrow" style="justify-content:center;">Let's build something</div>
+        <h2>Open to remote work<br>and freelance projects.</h2>
+        <p>IT support, frontend builds, or a site that needs someone who checks their work twice.</p>
+        <div class="contact-actions">
+          <a class="btn btn-solid" href="mailto:georgemonah84@gmail.com">Email Me</a>
+          <a class="btn btn-line" href="https://github.com/gogee84" target="_blank" rel="noopener">GitHub Profile</a>
+        </div>
+        <div class="socials">
+          <a href="mailto:georgemonah84@gmail.com">georgemonah84@gmail.com</a>
+          <a href="https://github.com/gogee84" target="_blank" rel="noopener">github.com/gogee84</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>© 2026 George Joshua Monah · Built from Arusha, Tanzania</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 30);
+  }, { passive:true });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold:.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
